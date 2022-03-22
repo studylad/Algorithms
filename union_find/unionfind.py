@@ -28,30 +28,28 @@ class UnionFind(object):
         leadera = self.get_leader(a)
         leaderb = self.get_leader(b)
 
-        if not b:
-            # only one item is inserted
-            if a not in self.leader:
-                # a is not already in any set
-                self.leader[a] = a
-                self.group[a] = set([a])
-                return 
+        if not b and a not in self.leader:
+            # a is not already in any set
+            self.leader[a] = a
+            self.group[a] = {a}
+            return 
 
-        if leadera is not None:
-            if leaderb is not None:
-                if leadera == leaderb: return # Do nothing
-                self.make_union(leadera, leaderb)
-            else:
-                # leaderb is none
-                self.group[leadera].add(b)
-                self.leader[b] = leadera
-        else:
+        if leadera is None:
             if leaderb is not None:
                 # leadera is none
                 self.group[leaderb].add(a)
                 self.leader[a] = leaderb
             else:
                 self.leader[a] = self.leader[b] = a
-                self.group[a] = set([a, b])
+                self.group[a] = {a, b}
+
+        elif leaderb is None:
+            # leaderb is none
+            self.group[leadera].add(b)
+            self.leader[b] = leadera
+        elif leadera == leaderb: return # Do nothing
+        else:
+            self.make_union(leadera, leaderb)
 
     def get_leader(self, a):
         return self.leader.get(a)
@@ -65,7 +63,10 @@ class UnionFind(object):
         """ takes union of two sets with leaders, leadera and leaderb
         in O(nlogn) time """
         if leadera not in self.group or leaderb not in self.group:
-            raise Exception("Invalid leader specified leadera -%s, leaderb - %s" % (leadera, leaderb))
+            raise Exception(
+                f"Invalid leader specified leadera -{leadera}, leaderb - {leaderb}"
+            )
+
         groupa = self.group[leadera]
         groupb = self.group[leaderb]
         if len(groupa) < len(groupb):

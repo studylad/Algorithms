@@ -63,8 +63,8 @@ class test_graph(unittest.TestCase):
         dag.add_edges([("a", "b"), ("a", "c"), ("a", "e"), ("d", "a")])
         dag.add_edges([("g", "b"), ("g", "f"), ("f", "e"), ("h", "f"), ("h", "a")])
         order = {o[0]: o[1] for o in topological_ordering(dag)}
-        self.assertEqual(sum([order[u] < order[v] for (u, v) in
-                         dag.edges()]), len(dag.edges())) # all comparisons are True
+        self.assertEqual(sum(order[u] < order[v] for (u, v) in
+                             dag.edges()), len(dag.edges()))
 
     def test_directed_connected_components(self):
         digr = digraph()

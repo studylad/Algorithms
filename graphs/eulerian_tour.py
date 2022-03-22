@@ -44,37 +44,35 @@ def get_a_tour():
         except StopIteration:
             loop = enumerate(nodes_degree)
 
-        if len(tour) > 2:
-            if tour[0] == tour[-1]:
-                return tour
+        if len(tour) > 2 and tour[0] == tour[-1]:
+            return tour
                 
 def get_eulerian_tour():
     '''This function returns a Eulerian Tour for the input graph.'''
     global graph
     tour = get_a_tour()
 
-    if graph:   # If stuck at the beginning, finding additional tour in the graph.
-        loop = enumerate(tour[: -1])
-        l = loop.__next__()
-        i = l[0]
-        node = l[1]
-        try:
-            while True:
-                if node in list(zip(*graph))[0] or node in list(zip(*graph))[1]:
-                    t = get_a_tour()    # Retreivng the additional tour
-                    j = t.index(node)
-                    tour = tour[ : i] + t[j:-1] + t[ :j+1] + tour[i+1: ]        # Joining the two tours.
-                    if not graph:       # Found Eulerian Tour
-                        return tour     # Returning the Eulerian Tour
-                    loop = enumerate(tour[: -1])        # Still stuck? Looping back to search for another tour.
-                l = loop.__next__()
-                i = l[0]
-                node = l[1]
-        except StopIteration:   # Oops! seems like the vertices in the current tour cannot connect to rest of the edges in the graph.
-            print("Your graph doesn't seem to be connected")
-            exit()
-    else:       # Found the Eulerian Tour in the very first call. Lucky Enough!
+    if not graph:
         return tour
+    loop = enumerate(tour[: -1])
+    l = loop.__next__()
+    i = l[0]
+    node = l[1]
+    try:
+        while True:
+            if node in list(zip(*graph))[0] or node in list(zip(*graph))[1]:
+                t = get_a_tour()    # Retreivng the additional tour
+                j = t.index(node)
+                tour = tour[ : i] + t[j:-1] + t[ :j+1] + tour[i+1: ]        # Joining the two tours.
+                if not graph:       # Found Eulerian Tour
+                    return tour     # Returning the Eulerian Tour
+                loop = enumerate(tour[: -1])        # Still stuck? Looping back to search for another tour.
+            l = loop.__next__()
+            i = l[0]
+            node = l[1]
+    except StopIteration:   # Oops! seems like the vertices in the current tour cannot connect to rest of the edges in the graph.
+        print("Your graph doesn't seem to be connected")
+        exit()
 
 # Sample inputs
 # graph = [(1, 2), (1, 3), (2, 3), (2, 4), (2, 6), (3, 4), (3, 5), (4, 5), (4, 6)]

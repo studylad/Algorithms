@@ -17,11 +17,10 @@ def _get_child_branch(trie, c):
     """
     Get branch matching the character
     """
-    for branch in _get_child_branches(trie):
-        if branch[0] == c:
-            return branch
-
-    return None
+    return next(
+        (branch for branch in _get_child_branches(trie) if branch[0] == c),
+        None,
+    )
 
 
 def _retrive_branch(k, trie):
@@ -41,17 +40,11 @@ def _retrive_branch(k, trie):
 
 
 def _is_trie_bucket(bucket):
-    if len(bucket) != 2:
-        return False
-
-    return type(bucket[1]) is tuple
+    return False if len(bucket) != 2 else type(bucket[1]) is tuple
 
 
 def _get_bucket_key(bucket):
-    if not _is_trie_bucket(bucket):
-        return None
-
-    return bucket[1][0]
+    return bucket[1][0] if _is_trie_bucket(bucket) else None
 
 
 def has_key(k, trie):
@@ -77,13 +70,12 @@ def insert_key(key, v, trie):
         return
 
     for char in key:
-        branch = _get_child_branch(trie, char)
-        if not branch:
+        if branch := _get_child_branch(trie, char):
+            trie = branch
+        else:
             new_branch = [char]
             trie.append(new_branch)
             trie = new_branch
-        else:
-            trie = branch
     trie.append((key, v))
 
 

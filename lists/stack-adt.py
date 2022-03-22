@@ -16,8 +16,7 @@ class Stack(object):
         return self.items.pop()
 
     def top(self):
-        if self.isEmpty(): return None
-        return self.items[-1]
+        return None if self.isEmpty() else self.items[-1]
 
 def string_reverse(s):
     stack = Stack()
@@ -34,11 +33,10 @@ def match_paren(parens):
     for b in parens:
         if b == "(":
             stack.push(1)
-        else: # b == ")"
-            if not stack.isEmpty():
-                stack.pop()
-            else:
-                return False
+        elif stack.isEmpty():
+            return False
+        else:
+            stack.pop()
     return stack.isEmpty()
 
 def infix_to_postfix(infixexpr):

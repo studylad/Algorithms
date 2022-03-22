@@ -8,25 +8,23 @@ from heapq import heappush, heappop
 # }
 
 def read_graph(file):
-    graph = dict()
+    graph = {}
     with open(file) as f:
         for l in f:
             (u, v, w) = l.split()
             if int(u) not in graph:
-                graph[int(u)] = dict()
+                graph[int(u)] = {}
             graph[int(u)][int(v)] = int(w)
     return graph
 
 inf = float('inf')
 def dijkstra(graph, s):
     n = len(graph.keys())
-    dist = dict()
-    Q = list()
-    
-    for v in graph:
-        dist[v] = inf
+    Q = []
+
+    dist = {v: inf for v in graph}
     dist[s] = 0
-    
+
     heappush(Q, (dist[s], s))
 
     while Q:

@@ -38,12 +38,11 @@ def quicksort(a):
     n = len(a)
     if n<=1:
         return a
-    else:
-        from random import randrange
-        pivot = a.pop(randrange(n))
-        lesser = quicksort([x for x in a if x < pivot])
-        greater = quicksort([x for x in a if x >= pivot])
-        return lesser + [pivot] + greater
+    from random import randrange
+    pivot = a.pop(randrange(n))
+    lesser = quicksort([x for x in a if x < pivot])
+    greater = quicksort([x for x in a if x >= pivot])
+    return lesser + [pivot] + greater
 
 
 def selectionsort(a):

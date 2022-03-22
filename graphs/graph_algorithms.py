@@ -7,8 +7,8 @@ def BFS(gr, s):
     """ Breadth first search 
     Returns a list of nodes that are "findable" from s """
     if not gr.has_node(s):
-        raise Exception("Node %s not in graph" % s)
-    nodes_explored = set([s])
+        raise Exception(f"Node {s} not in graph")
+    nodes_explored = {s}
     q = deque([s])
     while len(q)!=0:
         node = q.popleft()
@@ -24,22 +24,18 @@ def shortest_hops(gr, s):
     destination node from s -> no. of hops
     """
     if not gr.has_node(s):
-        raise Exception("Node %s is not in graph" % s)
-    else:
-        dist = {}
-        q = deque([s])
-        nodes_explored = set([s])
-        for n in gr.nodes():
-            if n == s: dist[n] = 0
-            else: dist[n] = float('inf')
-        while len(q) != 0:
-            node = q.popleft()
-            for each in gr.neighbors(node):
-                if each not in nodes_explored:
-                    nodes_explored.add(each)
-                    q.append(each)
-                    dist[each] = dist[node] + 1
-        return dist
+        raise Exception(f"Node {s} is not in graph")
+    q = deque([s])
+    nodes_explored = {s}
+    dist = {n: 0 if n == s else float('inf') for n in gr.nodes()}
+    while len(q) != 0:
+        node = q.popleft()
+        for each in gr.neighbors(node):
+            if each not in nodes_explored:
+                nodes_explored.add(each)
+                q.append(each)
+                dist[each] = dist[node] + 1
+    return dist
 
 def undirected_connected_components(gr):
     """ Returns a list of connected components
@@ -74,7 +70,7 @@ def topological_ordering(digr_ori):
     """ Returns a topological ordering for a 
     acyclic directed graph """
     if not digr_ori.DIRECTED:
-        raise Exception("%s is not a directed graph" % digr)
+        raise Exception(f"{digr} is not a directed graph")
     digr = deepcopy(digr_ori)
     ordering = []
     n = len(digr.nodes())
@@ -98,7 +94,7 @@ def directed_connected_components(digr):
     """ Returns a list of strongly connected components
     in a directed graph using Kosaraju's two pass algorithm """
     if not digr.DIRECTED:
-        raise Exception("%s is not a directed graph" % digr)
+        raise Exception(f"{digr} is not a directed graph")
     finishing_times = DFS_loop(digr.get_transpose())
     # use finishing_times in descending order
     nodes_explored, connected_components = [], []
@@ -143,7 +139,7 @@ def shortest_path(digr, s):
     """ Finds the shortest path from s to every other vertex findable
     from s using Dijkstra's algorithm in O(mlogn) time. Uses heaps
     for super fast implementation """
-    nodes_explored = set([s])
+    nodes_explored = {s}
     nodes_unexplored = DFS(digr, s) # all accessible nodes from s
     nodes_unexplored.remove(s)
     dist = {s:0}
@@ -153,7 +149,7 @@ def shortest_path(digr, s):
         min = compute_min_dist(digr, n, nodes_explored, dist)
         heapq.heappush(node_heap, (min, n))
 
-    while len(node_heap) > 0:
+    while node_heap:
         min_dist, nearest_node = heapq.heappop(node_heap)
         dist[nearest_node] = min_dist
         nodes_explored.add(nearest_node)
@@ -183,8 +179,8 @@ def minimum_spanning_tree(gr):
     """ Uses prim's algorithm to return the minimum 
     cost spanning tree in a undirected connected graph.
     Works only with undirected and connected graphs """
-    s = gr.nodes()[0] 
-    nodes_explored = set([s])
+    s = gr.nodes()[0]
+    nodes_explored = {s}
     nodes_unexplored = gr.nodes()
     nodes_unexplored.remove(s)
     min_cost, node_heap = 0, []

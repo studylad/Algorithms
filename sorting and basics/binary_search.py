@@ -23,11 +23,10 @@ def search(arr, item):
         midpoint = (first + last) // 2
         if arr[midpoint] == item:
             found = True
+        elif item < arr[midpoint]:
+            last = midpoint - 1
         else:
-            if item < arr[midpoint]:
-                last = midpoint - 1
-            else:
-                first = midpoint + 1
+            first = midpoint + 1
 
     return found
 

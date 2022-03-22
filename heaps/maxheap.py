@@ -8,7 +8,7 @@ class maxheap(minheap):
     MAX_HEAP = True
 
     def __str__(self):
-        return "Max-heap with %s items" % (len(self.heap))
+        return f"Max-heap with {len(self.heap)} items"
 
     def heapify(self, i):
         l = self.leftchild(i)

@@ -3,7 +3,7 @@ import random
 
 def heapsort(nums):
     h = minheap(nums)
-    return [h.heappop() for i in range(h.max_elements())]
+    return [h.heappop() for _ in range(h.max_elements())]
 
 if __name__ == "__main__":
     a = [random.choice(range(100)) for i in range(40)]
