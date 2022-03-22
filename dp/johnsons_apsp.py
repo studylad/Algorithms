@@ -16,27 +16,25 @@ inf = float('inf')
 dist = {}
 
 def read_graph(file,n):
-    graph = dict()
+    graph = {}
     with open(file) as f:
         for l in f:
             (u, v, w) = l.split()
             if int(u) not in graph:
-                graph[int(u)] = dict()
+                graph[int(u)] = {}
             graph[int(u)][int(v)] = int(w)
     for i in range(n):
         if i not in graph:
-            graph[i] = dict()
+            graph[i] = {}
     return graph
 
 def dijkstra(graph, s):
     n = len(graph.keys())
-    dist = dict()
-    Q = list()
-    
-    for v in graph:
-        dist[v] = inf
+    Q = []
+
+    dist = {v: inf for v in graph}
     dist[s] = 0
-    
+
     heappush(Q, (dist[s], s))
 
     while Q:
@@ -62,16 +60,13 @@ def bellman_ford(graph, s):
     initialize_single_source(graph, s)
     edges = [(u, v) for u in graph for v in graph[u].keys()]
     number_vertices = len(graph)
-    for i in range(number_vertices-1):
+    for _ in range(number_vertices-1):
         for (u, v) in edges:
             relax(graph, u, v)
-    for (u, v) in edges:
-        if dist[v] > dist[u] + graph[u][v]:
-            return False # there exists a negative cycle
-    return True
+    return all(dist[v] <= dist[u] + graph[u][v] for (u, v) in edges)
 
 def add_extra_node(graph):
-    graph[0] = dict()
+    graph[0] = {}
     for v in graph.keys():
         if v != 0:
             graph[0][v] = 0
@@ -92,13 +87,10 @@ def johnsons(graph_new):
     graph = reweighting(graph_new)
     if not graph:
         return False
-    final_distances = {}
-    for u in graph:
-        final_distances[u] = dijkstra(graph, u)
-
-    for u in final_distances:
+    final_distances = {u: dijkstra(graph, u) for u in graph}
+    for u, value in final_distances.items():
         for v in final_distances[u]:
-            final_distances[u][v] += dist[v] - dist[u]
+            value[v] += dist[v] - dist[u]
     return final_distances
             
 def compute_min(final_distances):

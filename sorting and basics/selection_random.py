@@ -20,17 +20,16 @@ def random_selection(a, start, end, i):
     >>> print sum(results)
     10
     """
-    if start < end:
-        p = choosePivot(start, end)
-        a[start], a[p] = a[p], a[start]
-        j = partition(a, start, end)
-        if j == i: return a[i]
-        if j < i:
-            return random_selection(a, j+1, end, i)
-        else: # j > i
-            return random_selection(a, start, j-1, i)
-    else:
+    if start >= end:
         return a[start]
+    p = choosePivot(start, end)
+    a[start], a[p] = a[p], a[start]
+    j = partition(a, start, end)
+    if j == i: return a[i]
+    if j < i:
+        return random_selection(a, j+1, end, i)
+    else: # j > i
+        return random_selection(a, start, j-1, i)
 
 def choosePivot(s, e):
     return randint(s,e)

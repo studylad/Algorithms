@@ -16,5 +16,4 @@ def generate_primes(n):
         if bool_array[i]:                                 # if the number is marked as prime
             for j in range(i*i,n+1,i):                    # iterate through all its multiples
                 bool_array[j] = False                     # and mark them as False
-    primes = [i for i in range(n+1) if bool_array[i]]     # return all numbers which are marked as True
-    return primes
+    return [i for i in range(n+1) if bool_array[i]]

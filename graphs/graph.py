@@ -30,7 +30,7 @@ class graph(object):
         if node not in self.node_neighbors:
             self.node_neighbors[node] = {}
         else:
-            raise Exception("Node %s is already in graph" % node)
+            raise Exception(f"Node {node} is already in graph")
 
     def has_node(self, node):
         """
@@ -44,12 +44,11 @@ class graph(object):
         An edge, here, is a pair of node like C(m, n) or a tuple
         """
         u, v = edge
-        if (v not in self.node_neighbors[u] and u not in self.node_neighbors[v]):
-            self.node_neighbors[u][v] = wt
-            if (u!=v):
-                self.node_neighbors[v][u] = wt
-        else:
-            raise Exception("Edge (%s, %s) already added in the graph" % (u, v))
+        if v in self.node_neighbors[u] or u in self.node_neighbors[v]:
+            raise Exception(f"Edge ({u}, {v}) already added in the graph")
+        self.node_neighbors[u][v] = wt
+        if (u!=v):
+            self.node_neighbors[v][u] = wt
 
     def add_edges(self, edges):
         """ Adds multiple edges in one go. Edges, here, is a list of
@@ -76,7 +75,7 @@ class graph(object):
         Returns a list of neighbors for a node
         """
         if not self.has_node(node):
-            raise "Node %s not in graph" % node
+            raise f"Node {node} not in graph"
         return self.node_neighbors[node].keys()
 
     def del_node(self, node):
@@ -95,7 +94,7 @@ class graph(object):
         """
         u, v = edge
         if not self.has_edge(edge):
-            raise Exception("Edge (%s, %s) not an existing edge" % (u, v))
+            raise Exception(f"Edge ({u}, {v}) not an existing edge")
         del self.node_neighbors[u][v]
         if (u!=v):
             del self.node_neighbors[v][u]
@@ -122,7 +121,7 @@ class graph(object):
         """Set the weight of the edge """
         u, v = edge
         if not self.has_edge(edge):
-            raise Exception("Edge (%s, %s) not an existing edge" % (u, v))
+            raise Exception(f"Edge ({u}, {v}) not an existing edge")
         self.node_neighbors[u][v] = wt
         if u != v:
             self.node_neighbors[v][u] = wt
@@ -131,7 +130,7 @@ class graph(object):
         """Returns the weight of an edge """
         u, v = edge
         if not self.has_edge((u, v)):
-            raise Exception("%s not an existing edge" % edge)
+            raise Exception(f"{edge} not an existing edge")
         return self.node_neighbors[u].get(v, self.DEFAULT_WEIGHT)
 
     def get_edge_weights(self):

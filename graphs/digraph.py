@@ -28,7 +28,7 @@ class digraph(graph):
         if (v not in self.node_neighbors[u]):
             self.node_neighbors[u][v] = wt
         else:
-            raise Exception("Edge (%s, %s) already added in the graph" % (u, v))
+            raise Exception(f"Edge ({u}, {v}) already added in the graph")
 
     def del_edge(self, edge):
         """
@@ -37,7 +37,7 @@ class digraph(graph):
         """
         u, v = edge
         if not self.has_edge(edge):
-            raise Exception("Edge (%s, %s) not an existing edge" % (u, v))
+            raise Exception(f"Edge ({u}, {v}) not an existing edge")
         del self.node_neighbors[u][v]
 
     def del_node(self, node):

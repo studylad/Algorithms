@@ -13,7 +13,7 @@ class minheap(object):
             self.build_heap(nums)
 
     def __str__(self):
-        return "Min-heap with %s items" % (len(self.heap))
+        return f"Min-heap with {len(self.heap)} items"
 
     def max_elements(self):
         return len(self.heap)

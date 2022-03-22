@@ -10,7 +10,7 @@ class test_heap(unittest.TestCase):
     def setUp(self):
         self.h = minheap()
         self.m = maxheap()
-        self.a = [random.choice(range(50)) for i in range(10)]
+        self.a = [random.choice(range(50)) for _ in range(10)]
         self.h.build_heap(self.a)
         self.m.build_heap(self.a)
 
@@ -23,8 +23,8 @@ class test_heap(unittest.TestCase):
         self.assertEqual(len(self.a), self.m.max_elements())
 
     def test_heap_sort(self):
-        sorted_h = [self.h.heappop() for i in range(self.h.max_elements())]
-        sorted_m = [self.m.heappop() for i in range(self.m.max_elements())]
+        sorted_h = [self.h.heappop() for _ in range(self.h.max_elements())]
+        sorted_m = [self.m.heappop() for _ in range(self.m.max_elements())]
         self.assertEqual(sorted_h, sorted(self.a))
         self.assertEqual(sorted_m, sorted(self.a, reverse=True))
 

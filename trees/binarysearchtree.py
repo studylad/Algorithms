@@ -10,7 +10,7 @@ class Node(object):
         self.value = value
 
     def __repr__(self):
-        return "Node with value - %s" % self.value
+        return f"Node with value - {self.value}"
 
 class BinarySearchTree(object):
     def __init__(self):
@@ -21,7 +21,7 @@ class BinarySearchTree(object):
         return self.len
 
     def is_empty(self):
-        return self.root == None
+        return self.root is None
 
     def _inorder(self, node, values):
         if node != None:
@@ -66,10 +66,7 @@ class BinarySearchTree(object):
 
     def _extremes(self, root, find_min = True):
         while (find_min and root.left) or (not find_min and root.right):
-            if find_min:
-                root = root.left
-            else: # find max
-                root = root.right
+            root = root.left if find_min else root.right
         return root
 
     def get_min(self):
@@ -100,13 +97,8 @@ class BinarySearchTree(object):
         else:
             node = self.root
             while node and node.value != value:
-                if node.value == value:
-                  return
                 parent = node
-                if node.value < value:
-                    node = node.right
-                else:
-                    node = node.left
+                node = node.right if node.value < value else node.left
             if parent.value > value:
                 parent.left = new_node
             else:
@@ -120,14 +112,8 @@ class BinarySearchTree(object):
         node = self.find_element(value)
         if not node:
             return None
-        if not node.left or not node.right:
-            node_spliced = node
-        else:
-            node_spliced = self.successor(node.value)
-        if node_spliced.left:
-            temp_node = node_spliced.left
-        else:
-            temp_node = node_spliced.right
+        node_spliced = self.successor(node.value) if node.left and node.right else node
+        temp_node = node_spliced.left or node_spliced.right
         if temp_node:
             temp_node.parent = node_spliced.parent
         if not node_spliced.parent:

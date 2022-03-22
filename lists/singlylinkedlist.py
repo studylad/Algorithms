@@ -66,7 +66,7 @@ class SinglyLinkedList(object):
                 tmp = tmp.next
         if found:
             self.size -= 1
-            if prev == None:
+            if prev is None:
                 self.head = self.head.next
             else:
                 prev.next = tmp.next

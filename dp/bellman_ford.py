@@ -28,17 +28,12 @@ def bellman_ford(graph, s):
     initialize_single_source(graph, s)
     edges = [(u, v) for u in graph for v in graph[u].keys()]
     number_vertices = len(graph)
-    for i in range(number_vertices-1):
+    for _ in range(number_vertices-1):
         for (u, v) in edges:
             relax(graph, u, v)
-    for (u, v) in edges:
-        if dist[v] > dist[u] + graph[u][v]:
-            return False # there exists a negative cycle
-    return True
+    return all(dist[v] <= dist[u] + graph[u][v] for (u, v) in edges)
 
 def get_distances(graph, s):
-    if bellman_ford(graph, s):
-        return dist
-    return "Graph contains a negative cycle"
+    return dist if bellman_ford(graph, s) else "Graph contains a negative cycle"
 
 print get_distances(graph, 's')

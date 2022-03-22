@@ -6,7 +6,7 @@ def longest_common_subsequence(s1, s2):
     # lengths of strings s1 and s2
     m, n = len(s1), len(s2)
     # to cache the results
-    cache = [[0 for j in range(n + 1)] for i in range(m + 1)]
+    cache = [[0 for _ in range(n + 1)] for _ in range(m + 1)]
     for i, character_s1 in enumerate(s1):
         for j, character_s2 in enumerate(s2):
             if character_s1 == character_s2:

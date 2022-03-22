@@ -10,7 +10,7 @@ graph = [
 ]
 
 def make_matrix(file, n):
-    graph = [[inf for i in range(n)] for i in range(n)]
+    graph = [[inf for _ in range(n)] for _ in range(n)]
     with open(file) as f:
         for l in f:
            (i, j, w) = l.split() 
@@ -23,19 +23,16 @@ def floyd_warshall(graph):
     for k in range(n):
         for i in range(n):
             for j in range(n):
-                if i==j:
-                    D[i][j] = 0
-                else:
-                    D[i][j] = min(D[i][j], D[i][k] + D[k][j])
+                D[i][j] = 0 if i==j else min(D[i][j], D[i][k] + D[k][j])
     return D
 
 def fastfloyd(D):
-	_,n = D.shape
-	for k in xrange(n):
-		i2k = reshape(D[k,:],(1,n))
-		k2j = reshape(D[:,k],(n,1))
-		D = minimum(D,i2k+k2j)
-	return D.min() if not any(D.diagonal() < 0) else None
+    _,n = D.shape
+    for k in xrange(n):
+    	i2k = reshape(D[k,:],(1,n))
+    	k2j = reshape(D[:,k],(n,1))
+    	D = minimum(D,i2k+k2j)
+    return None if any(D.diagonal() < 0) else D.min()
 
 def get_min_dist(D):
     if negative_cost_cycle(D):
@@ -44,10 +41,7 @@ def get_min_dist(D):
 
 def negative_cost_cycle(D):
     n = len(D)
-    for i in range(n):
-        if D[i][i] < 0:
-            return True
-    return False
+    return any(D[i][i] < 0 for i in range(n))
 
 # print get_min_dist(floyd_warshall(graph))
 n = 1000

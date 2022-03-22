@@ -3,7 +3,7 @@ Problem: http://www.algorithmist.com/index.php/Coin_Change
 """
 def coinchange(total, coins):
     M = len(coins)
-    table = [[0]*M for i in range(total+1)]
+    table = [[0]*M for _ in range(total+1)]
     for i in range(M):
         table[0][i] = 1
 

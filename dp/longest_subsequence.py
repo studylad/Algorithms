@@ -10,11 +10,10 @@ def longest_increasing_subsequence(nums):
     location = [-1] * len(nums)
 
     for i in range(1, len(nums)):
-        for j in range(0, i):
-            if nums[i] > nums[j]:
-                if cache[j] + 1 > cache[i]:
-                    cache[i] = cache[j] + 1
-                    location[i] = j
+        for j in range(i):
+            if nums[i] > nums[j] and cache[j] + 1 > cache[i]:
+                cache[i] = cache[j] + 1
+                location[i] = j
 
     # finding the max in the cache gives us the 
     # answer - i.e. length of the LIS

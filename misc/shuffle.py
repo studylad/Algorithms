@@ -15,7 +15,7 @@ def shuffle(arr):
 	"""
 	Shuffle a list.
 	"""
-	for i in range(0,len(arr)):
+	for i in range(len(arr)):
 		r = randint(0,i)
 		arr[i],arr[r] = arr[r],arr[i]
 
